@@ -1,6 +1,7 @@
-from typing import List, Union
-import requests
 from dataclasses import dataclass
+from typing import List, Optional
+
+import requests
 
 BASE_URL = "https://pokeapi.co/api/v2/"
 POKEMON_RESOURCE = "pokemon/"
@@ -24,11 +25,11 @@ class Pokemon:
     order: int
     height: int
     weight: int
-    types: Union[List[PokemonType], None] = None
-    moves: Union[List[PokemonMove], None] = None
+    types: Optional[List[PokemonType]] = None
+    moves: Optional[List[PokemonMove]] = None
 
 
-class PokeApiFetcher():
+class PokeApiFetcher:
     def __init__(self, base_url: str = BASE_URL, limit: int = 500) -> None:
         self.session = requests.Session()
         self.base_url = base_url
@@ -53,7 +54,7 @@ class PokeApiFetcher():
 
         return data.get("results", []), data.get("next")
 
-    def make_pokemon_by_url(self, url: str) -> Union[Pokemon, None]:
+    def make_pokemon_by_url(self, url: str) -> Optional[Pokemon]:
         response = self.session.get(url)
         pokemon_data = response.json()
 
@@ -67,7 +68,45 @@ class PokeApiFetcher():
             weight=pokemon_data["weight"],
         )
 
+        _moves = []
+        for move_data in pokemon_data["moves"]:
+            move = self.get_pokemon_move_by_url(move_data["move"]["url"])
+            if move:
+                _moves.append(move)
+        if _moves:
+            pokemon.moves = _moves
+
+        _types = []
+        for type_data in pokemon_data["types"]:
+            _types.append(PokemonType(name=type_data["type"]["name"]))
+        if _types:
+            pokemon.types = _types
+
         return pokemon
 
     def get_pokemon_move_by_url(self, url: str):
-        pass
+        response = self.session.get(url)
+        data = response.json()
+        if data:
+            return PokemonMove(name=data["name"], power=data["power"])
+        return None
+
+
+def get_pokemon_by_type(type_name: str, source: str):
+    pass
+
+
+def get_pokemon_by_move(move_name: str, source: str):
+    pass
+
+
+if __name__ == "__main__":
+    po = PokeApiFetcher(limit=5)
+    purls, next_url = po.get_pokemons_urls_list()
+    print("Getting 100 pokemons from PokeAPI ...")
+    pokemons = []
+    for url_info in purls:
+        print(f"Getting info for {url_info['name']} ...")
+        pokemons.append(po.make_pokemon_by_url(url_info["url"]))
+
+    print(pokemons)
