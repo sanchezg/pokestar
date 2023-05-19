@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "pokestar"
+version = "0.1.0"
+description = ""
+authors = ["Gonzalo Sanchez"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+requests = "^2.30.0"
+
+
+[tool.poetry.group.dev.dependencies]
+ipdb = "^0.13.13"
+ipython = "^8.13.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
