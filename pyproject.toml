@@ -20,6 +20,7 @@ psycopg2-binary = "^2.9.6"
 ipdb = "^0.13.13"
 ipython = "^8.13.2"
 pre-commit = "^3.3.2"
+factory-boy = "^3.2.1"
 
 [build-system]
 requires = ["poetry-core"]
