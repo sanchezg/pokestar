@@ -7,11 +7,12 @@ services:
       context: ../
       dockerfile: docker/Dockerfile
     volumes:
-      - ../:/code
+      - ../pokestar/:/code
     ports:
       - "8000:8000"
     depends_on:
       - db
+      - broker
     env_file:
       - ./config/.env.core.local
 
@@ -23,3 +24,11 @@ services:
       - "5432:5432"
     env_file:
       - ./config/.env.postgres.local
+
+  broker:
+    image: rabbitmq:3.11
+    volumes:
+      - ./data/broker/db:/var/lib/rabbitmq/
+      - ./data/broker/config:/etc/rabbitmq/
+    ports:
+      - "5672:5672"
