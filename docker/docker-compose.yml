@@ -13,6 +13,20 @@ services:
     depends_on:
       - db
       - broker
+      - worker
+    env_file:
+      - ./config/.env.core.local
+
+  worker:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ../pokestar/:/code
+    command: /bin/sh -c 'sleep 5 && su -m pokestar -c "celery -A pokestar.celery worker -l debug -E"'
+    depends_on:
+      - db
+      - broker
     env_file:
       - ./config/.env.core.local
 
@@ -32,3 +46,6 @@ services:
       - ./data/broker/config:/etc/rabbitmq/
     ports:
       - "5672:5672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=passW

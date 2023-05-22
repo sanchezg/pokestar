@@ -23,5 +23,5 @@ COPY poetry.lock pyproject.toml /code/
 RUN poetry config virtualenvs.create false \
   && poetry install $(test "${ENV}" == prod && echo "--no-dev") --no-interaction --no-ansi
 
-# Creating folders, and files for a project:
-COPY ./pokestar/* /code
+RUN adduser --disabled-password --gecos '' pokestar
+CMD python manage.py runserver 0.0.0.0:8000
