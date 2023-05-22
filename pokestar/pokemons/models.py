@@ -51,3 +51,16 @@ class Pokemon(models.Model):
         pobj.save()
 
         return pobj
+
+    def similar(self):
+        """
+        Get Pokemons that share at least 3 moves.
+
+        TODO: A better place to keep this would be a custom manager.
+        """
+        return (
+            Pokemon.objects.filter(moves__in=self.moves.all())
+            .annotate(count=models.Count("id"))
+            .filter(count__gte=3)
+            .order_by("-count")
+        )

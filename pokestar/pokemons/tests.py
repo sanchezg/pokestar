@@ -79,3 +79,21 @@ class PokemonViewSetTests(TestCase):
         response_data = response.json()
         self.assertEqual(response_data["name"], MOVE_NAME)
         self.assertEqual(response_data["power"], MOVE_POWER)
+
+
+class PokemonModel(TestCase):
+    def test_similar_gets_with_at_least_three_identic_moves(self):
+        move1 = PokemonMoveFactory(name="move1")
+        move2 = PokemonMoveFactory(name="move2")
+        move3 = PokemonMoveFactory(name="move3")
+        move4 = PokemonMoveFactory(name="move4")
+
+        p1 = PokemonFactory(moves=[move1, move2, move3, move4])
+        p2 = PokemonFactory(moves=[move1, move2])  # shouldn't appear in results
+        p3 = PokemonFactory(moves=[move1, move2, move4])  # should appear in results
+        p4 = PokemonFactory(moves=[move2, move3, move4])  # should appear in results
+
+        results = p1.similar()
+        self.assertNotIn(p2, results)
+        self.assertIn(p3, results)
+        self.assertIn(p4, results)

@@ -22,6 +22,12 @@ class PokemonViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
         return Response()
 
+    @action(detail=True)
+    def similar(self, request, pk=None):
+        pokemon: Pokemon = self.get_object()
+        serializer = self.serializer_class(pokemon.similar(), many=True)
+        return Response(serializer.data)
+
 
 class PokemonMoveViewSet(viewsets.ModelViewSet):
     queryset = PokemonMove.objects.all()
