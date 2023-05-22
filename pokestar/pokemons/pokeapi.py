@@ -90,23 +90,3 @@ class PokeApiFetcher:
         if data:
             return PokemonMove(name=data["name"], power=data["power"])
         return None
-
-
-def get_pokemon_by_type(type_name: str, source: str):
-    pass
-
-
-def get_pokemon_by_move(move_name: str, source: str):
-    pass
-
-
-if __name__ == "__main__":
-    po = PokeApiFetcher(limit=5)
-    purls, next_url = po.get_pokemons_urls_list()
-    print("Getting 100 pokemons from PokeAPI ...")
-    pokemons = []
-    for url_info in purls:
-        print(f"Getting info for {url_info['name']} ...")
-        pokemons.append(po.make_pokemon_by_url(url_info["url"]))
-
-    print(pokemons)

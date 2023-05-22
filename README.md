@@ -20,3 +20,10 @@ poetry run python manage.py runserver 0.0.0.0:8000
 
 In both ways, hitting `http://localhost:8000/pokemons/` should show you an HTML web with the latest 5 pokemons retrieved from PokeAPI.
 In that HTML page, there's a submit form button to retrieve pokemons from PokeAPI. If you hit it, check the broker and worker container logs to see if the tasks are running in background.
+
+## Testing the API with a client
+
+A CLI client was included in `pokefetcher/apifetcher.py` with two functions:
+
+1. Fetching Pokemons from PokeAPI: run the cli client with `python apifetcher.py fetch-pokemons`
+2. Filtering Pokemons from local API: run the cli client with `python apifetcher.py by-move -m MOVE1 -m MOVE2 ...` or `python apifetcher.py by-type -t TYPE1 -t TYPE2 ...` to filter Pokemons stored locally.
