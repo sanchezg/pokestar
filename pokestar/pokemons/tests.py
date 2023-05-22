@@ -24,12 +24,12 @@ class PokemonViewSetTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         response_data = response.json()
-        self.assertEqual(len(response_data), 2)
+        self.assertEqual(response_data["count"], 2)
 
         response = self.client.get(self.path, data={"types": "type2"})
         self.assertEqual(response.status_code, 200)
         response_data = response.json()
-        self.assertEqual(len(response_data), 1)
+        self.assertEqual(response_data["count"], 1)
 
     def test_pokemon_viewset_GET_can_filter_per_move(self):
         PokemonFactory(moves=(PokemonMoveFactory(name="move1"), PokemonMoveFactory(name="move2")))
@@ -39,12 +39,12 @@ class PokemonViewSetTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         response_data = response.json()
-        self.assertEqual(len(response_data), 2)
+        self.assertEqual(response_data["count"], 2)
 
         response = self.client.get(self.path, data={"moves": "move2"})
         self.assertEqual(response.status_code, 200)
         response_data = response.json()
-        self.assertEqual(len(response_data), 1)
+        self.assertEqual(response_data["count"], 1)
 
     def test_pokemon_viewset_GET_filters_per_types_includes_all(self):
         PokemonFactory(types=(PokemonTypeFactory(name="type1"), PokemonTypeFactory(name="type2")))
@@ -54,7 +54,7 @@ class PokemonViewSetTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         response_data = response.json()
-        self.assertEqual(len(response_data), 1)  # only result that has both types
+        self.assertEqual(response_data["count"], 1)  # only result that has both types
 
     def test_pokemon_viewset_GET_filters_per_moves_includes_all(self):
         PokemonFactory(moves=(PokemonMoveFactory(name="move1"), PokemonMoveFactory(name="move2")))
@@ -64,4 +64,18 @@ class PokemonViewSetTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         response_data = response.json()
-        self.assertEqual(len(response_data), 1)
+        self.assertEqual(response_data["count"], 1)
+
+    def test_pokemon_best_move(self):
+        MOVE_NAME = "BEST"
+        MOVE_POWER = 200
+        p = PokemonFactory(
+            moves=(PokemonMoveFactory(name="move1", power=1), PokemonMoveFactory(name=MOVE_NAME, power=MOVE_POWER))
+        )
+
+        response = self.client.get(f"{self.path}{p.id}/best_move/")
+
+        self.assertEqual(response.status_code, 200)
+        response_data = response.json()
+        self.assertEqual(response_data["name"], MOVE_NAME)
+        self.assertEqual(response_data["power"], MOVE_POWER)

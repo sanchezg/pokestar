@@ -1,5 +1,7 @@
 from django.utils.translation import gettext_lazy as _
 from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from .filters import PokemonMovesFilterBackend, PokemonTypesFilterBackend
 from .models import Pokemon, PokemonMove, PokemonType
@@ -11,6 +13,14 @@ class PokemonViewSet(viewsets.ModelViewSet):
     serializer_class = PokemonSerializer
     permission_classes = []
     filter_backends = [PokemonMovesFilterBackend, PokemonTypesFilterBackend]
+
+    @action(detail=True)
+    def best_move(self, request, pk=None):
+        pokemon: Pokemon = self.get_object()
+        if pokemon.moves.exists():
+            serializer = PokemonMoveSerializer(pokemon.moves.order_by("-power").first())
+            return Response(serializer.data)
+        return Response()
 
 
 class PokemonMoveViewSet(viewsets.ModelViewSet):
