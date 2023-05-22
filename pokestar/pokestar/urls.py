@@ -24,6 +24,8 @@ router.registry.extend(pokemons_router.registry)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    # App views
+    path("pokemons/", include("pokemons.urls")),
     # API urls
     path("api/v1/", include(router.urls)),
 ]

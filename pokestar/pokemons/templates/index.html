@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>PokeStar Fetcher</title>
+    </head>
+    <body>
+        <h1 style="text-align:center;">PokeStar Fetcher</h1>
+        {% if pokemons_list %}
+            <p>These are the last five pokemons uploaded:</p>
+            <ul>
+            {% for pokemon in pokemons_list %}
+                <li><a href="/api/v1/pokemons/{{ pokemon.id }}/">{{ pokemon.name }} ({{ pokemon.created_at }})</a></li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No pokemons are available.</p>
+        {% endif %}
+        <form action="/pokemons/" method="POST" style="text-align:center;">
+            {% csrf_token %}
+            <input type="submit" value="Fetch pokemons!">
+        </form>
+    </body>
+</html>
