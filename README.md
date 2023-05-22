@@ -27,3 +27,9 @@ A CLI client was included in `pokefetcher/apifetcher.py` with two functions:
 
 1. Fetching Pokemons from PokeAPI: run the cli client with `python apifetcher.py fetch-pokemons`
 2. Filtering Pokemons from local API: run the cli client with `python apifetcher.py by-move -m MOVE1 -m MOVE2 ...` or `python apifetcher.py by-type -t TYPE1 -t TYPE2 ...` to filter Pokemons stored locally.
+
+## Technical debt
+
+1. Include more unit tests: for API, serializers, views, template, and CLI client tool.
+2. Deploy it with nginx.
+3. Auto run tests with a GH action.

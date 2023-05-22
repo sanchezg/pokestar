@@ -19,8 +19,8 @@ def by_type(type: List[str]):
     types = ",".join(type)
     result = requests.get(BASE_URL, data={"types": types})
     data = result.json()
-    print(f"I have found {len(data)} Pokemons with types '{types}'. These are the names:")
-    print([x["name"] for x in data])
+    print(f"I have found {data['count']} Pokemons with types '{types}'. These are the names for the first 20:")
+    print([x["name"] for x in data["results"]])
 
 
 @apifetcher.command()
@@ -29,8 +29,8 @@ def by_move(move: List[str]):
     moves = ",".join(move)
     result = requests.get(BASE_URL, data={"moves": moves})
     data = result.json()
-    print(f"I have found {len(data)} Pokemons with moves '{moves}'. These are the names:")
-    print([x["name"] for x in data])
+    print(f"I have found {data['count']} Pokemons with moves '{moves}'. These are the names for the first 20:")
+    print([x["name"] for x in data["results"]])
 
 
 @apifetcher.command()

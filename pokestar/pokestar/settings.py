@@ -144,3 +144,5 @@ BROKER_USER = os.environ.get("CELERY_USER", "admin")
 BROKER_PASS = os.environ.get("CELERY_PASS", "passW")
 BROKER_HOST = os.environ.get("CELERY_HOST", "broker")
 CELERY_BROKER_URL = f"pyamqp://{BROKER_USER}:{BROKER_PASS}@{BROKER_HOST}"
+
+REST_FRAMEWORK = {"DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination", "PAGE_SIZE": 20}
