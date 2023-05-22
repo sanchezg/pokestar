@@ -28,6 +28,12 @@ A CLI client was included in `pokefetcher/apifetcher.py` with two functions:
 1. Fetching Pokemons from PokeAPI: run the cli client with `python apifetcher.py fetch-pokemons`
 2. Filtering Pokemons from local API: run the cli client with `python apifetcher.py by-move -m MOVE1 -m MOVE2 ...` or `python apifetcher.py by-type -t TYPE1 -t TYPE2 ...` to filter Pokemons stored locally.
 
+## Additional API routes
+
+Two additional routes to the CRUD were added:
+1. Get best move for a Pokemon: ` GET /api/v1/pokemons/<id>/best_move/` Will return you the PokemonMove with highest power for the specified Pokemon.
+2. Get similar Pokemons: `GET /api/v1/pokemons/<id>/similar/` will return you a list of Pokemons that share at least three moves with specified Pokemon. This list is ordered in desc order based on moves shared.
+
 ## Technical debt
 
 1. Include more unit tests: for API, serializers, views, template, and CLI client tool.
